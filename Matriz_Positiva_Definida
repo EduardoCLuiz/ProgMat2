@@ -1,0 +1,50 @@
+import numpy as np
+# Aqui, estamos definindo uma função chamada is_matriz_definida_positiva que recebe uma matriz como argumento.
+def is_matriz_definida_positiva(matriz): 
+    # Verificar se a matriz é simétrica usando np.allclose, que compara se os elementos da matriz e de sua transposta 
+    #são aproximadamente iguais. Se a matriz não for simétrica, ela não pode ser definida positiva.
+    if not np.allclose(matriz, matriz.T):
+        return False
+
+    # Obter a dimensão da matriz
+    n = len(matriz)
+
+    # Inicializar a matriz triangular inferior
+    L = np.zeros_like(matriz, dtype=float)
+
+    # Fatoração de Cholesky
+    # Iteramos sobre as linhas e colunas da matriz, atualizando os elementos da matriz triangular inferior L com base na fatoração de Cholesky.
+    for i in range(n):
+        for j in range(i+1):
+            soma = sum(L[i, k] * L[j, k] for k in range(j))
+            if i == j:
+                L[i, j] = np.sqrt(matriz[i, i] - soma)
+            else:
+                L[i, j] = (1.0 / L[j, j] * (matriz[i, j] - soma))
+
+    # Verificar se todos os elementos da diagonal de L são positivos. Se sim, a matriz é definida positiva; caso contrário, não é.
+    if np.all(L.diagonal() > 0):
+        return True
+    
+    else:
+        return False
+
+# Solicitar ao usuário o tamanho da matriz
+tamanho_matriz = int(input("Digite o tamanho da matriz: "))
+
+# Solicitar ao usuário para inserir os elementos da matriz
+matriz_usuario = np.array([[float(input(f"Digite o elemento [{i + 1}][{j + 1}]: ")) for j in range(tamanho_matriz)] for i in range(tamanho_matriz)])
+
+# Verificar se a matriz é definida positiva
+if is_matriz_definida_positiva(matriz_usuario):
+    print("\nA matriz inserida é definida positiva.")
+else:
+    print("\nA matriz inserida não é definida positiva.")
+# Mostrar a matriz inserida
+print("\nMatriz inserida:")
+print(matriz_usuario)
+
+
+
+
+
