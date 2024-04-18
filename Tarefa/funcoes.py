@@ -24,3 +24,8 @@ def calcula_hessiana_simbolica(funcao, x):
     hessiana = sp.hessian(f, x_sympy)  # Calcula a matriz hessiana da função
     hessiana_eval = hessiana.subs([(x_sympy[i], x[i]) for i in range(len(x))])  # Avalia a hessiana nos pontos fornecidos
     return np.array(hessiana_eval).astype(float)  # Converte a matriz hessiana para um array numpy
+
+
+
+
+#vufrrj
