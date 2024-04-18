@@ -49,6 +49,28 @@ class OtimizacaoSemRestricoes:
         
         return alfa
     
+    def busca_linear_exato(self, ponto_k, direcao):
+        # Método para realizar a busca linear exata
+        alfa = 1.0
+        beta = 0.5
+        c = 0.1
+        max_iter = 100
+        
+        f_xk = self.calcula_funcao(ponto_k)
+        gradiente_fk = self.calcula_gradiente(ponto_k)
+        dk = direcao
+        
+        for _ in range(max_iter):
+            f_xk_novo = self.calcula_funcao(ponto_k + alfa * dk)
+            condicao_armijo = f_xk_novo <= f_xk + c * alfa * np.dot(gradiente_fk, dk)
+            
+            if condicao_armijo:
+                return alfa
+            
+            alfa *= beta
+        
+        return alfa
+    
     def metodo_gradiente(self, ponto_inicial, tol=1e-5, max_iter=1000):
         # Método para otimização usando o gradiente descendente
         ponto_k = ponto_inicial
@@ -61,7 +83,7 @@ class OtimizacaoSemRestricoes:
             if np.allclose(gradiente_fk, 0):
                 break
             
-            alfa_k = self.busca_linear(ponto_k, dk)
+            alfa_k = self.busca_linear_exato(ponto_k, dk)
             
             ponto_k = ponto_k + alfa_k * dk
             self.pontos_intermediarios.append(ponto_k.copy())
@@ -126,6 +148,9 @@ ponto_otimo_gradiente_formatado = ['{:.10f}'.format(coord) if abs(coord) > 1e-10
 print("Ponto ótimo encontrado pelo método do gradiente:", ponto_otimo_gradiente_formatado)
 print("Valor ótimo encontrado pelo método do gradiente:", round(otimizacao.calcula_funcao(ponto_otimo_gradiente), 3))
 
+# Reinicializa os pontos intermediários para o método de Newton
+otimizacao.pontos_intermediarios = []
+
 # Executa o método de Newton
 ponto_otimo_newton = otimizacao.metodo_newton(ponto_inicial_exemplo)
 
@@ -135,7 +160,7 @@ for i, ponto_intermediario in enumerate(otimizacao.pontos_intermediarios):
     ponto_formatado = ['{:.10f}'.format(coord) if abs(coord) > 1e-10 else '0.0' for coord in ponto_intermediario]
     print(f"Iteração {i+1}: {ponto_formatado}")
 
-# Formata o ponto ótimo encontrado pelo método de Newton para impressão
+# Formata o ponto ótimo do método de Newton para impressão
 ponto_otimo_newton_formatado = ['{:.10f}'.format(coord) if abs(coord) > 1e-10 else '0.0' for coord in ponto_otimo_newton]
 print("Ponto ótimo encontrado pelo método de Newton:", ponto_otimo_newton_formatado)
 print("Valor ótimo encontrado pelo método de Newton:", round(otimizacao.calcula_funcao(ponto_otimo_newton), 3))
