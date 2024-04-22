@@ -3,7 +3,8 @@ import sympy as sp
 
 def funcao_quadratica(x):
     # Define a função quadrática
-    return 3 * x[0]**2 + x[1]**2 + 5
+    return 20 * x[0]**2 + 1 * x[1] + 20 * x[0]**2 + x[1]**2
+    #return 3 * x[0]**2 + x[1]**2 + 5
 
 def calcula_gradiente(funcao, x):
     # Calcula o gradiente da função numericamente
