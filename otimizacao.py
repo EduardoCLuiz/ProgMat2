@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-from funcoes import funcao_quadratica, calcula_gradiente, calcula_hessiana_simbolica
+from funcoes import funcao_quadratica, calcula_gradiente, calcula_hessiana
 
 class OtimizacaoSemRestricoes:
     def __init__(self, ponto_inicial, funcao, gradiente, hessiana):
@@ -121,10 +121,10 @@ class OtimizacaoSemRestricoes:
         return ponto_k
 
 # Define o ponto inicial
-ponto_inicial_exemplo = np.array([8.0, -3.0])
+ponto_inicial_exemplo = np.array([1.0, -3.0])
 
 # Cria uma instância da classe de otimização
-otimizacao = OtimizacaoSemRestricoes(ponto_inicial_exemplo, funcao_quadratica, calcula_gradiente, calcula_hessiana_simbolica)
+otimizacao = OtimizacaoSemRestricoes(ponto_inicial_exemplo, funcao_quadratica, calcula_gradiente, calcula_hessiana)
 ponto = np.array([2.0 , 5.0])
 
 # Imprime o gradiente e a hessiana da função no ponto especificado
@@ -173,8 +173,8 @@ fig1 = plt.figure()
 ax1 = fig1.add_subplot(111, projection='3d')
 
 # Plotagem da superfície da função
-x = np.linspace(-1, 1, 100)
-y = np.linspace(-1, 1, 100)
+x = np.linspace(-10, 10, 100)
+y = np.linspace(-10, 10, 100)
 X, Y = np.meshgrid(x, y)
 Z = funcao_quadratica(np.array([X, Y]))
 ax1.plot_surface(X, Y, Z, cmap='viridis', alpha=0.6)
@@ -221,8 +221,8 @@ ax2.legend()
 plt.show()
 
 # Geração de pontos para plotagem das curvas de nível
-x = np.linspace(-4, 4, 400)
-y = np.linspace(-4, 4, 400)
+x = np.linspace(-10, 10, 400)
+y = np.linspace(-10, 10, 400)
 X, Y = np.meshgrid(x, y)
 Z = funcao_quadratica([X, Y])
 
